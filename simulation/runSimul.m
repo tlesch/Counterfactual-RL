@@ -1,5 +1,5 @@
 function [] = runSimul( parameterFile, outcomeFile, outputFile, nrIt,...
-    sRun,trialsq)
+    sRun,trialsq, choiceRule)
 %generate nrIt sample for all subject (rows) in paramterFile
 
 %read in the outcome, choice and start values input files for all subjects
@@ -9,7 +9,6 @@ outcome = csvread(outcomeFile);
 subjects = size(parameter,1);
 options = size(outcome,2)/subjects;
 nrParam = size(parameter,2);
-choiceRule = 1;
 
 trialArr = {'all','sta','dyn'};
 %trialsq = 1;
@@ -31,10 +30,10 @@ for s = 1 : subjects
     data(:,:,:) = simulData(parameter(s,:), outcome(tStart:tEnd,((s-1)*options)+1:(s*options)),...
         nrIt,choiceRule);
 	if sRun ~= 0
-        filename = [ outputFile,'M', num2str(nrParam-1),'_',...
+        filename = [ outputFile,'M', num2str(nrParam-1),num2str(choiceRule),'_',...
             num2str(s),'_',trialArr{trialsq},'_',num2str(sRun),'.csv' ];
     else 
-        filename = [ outputFile,'M', num2str(nrParam-1),'_',...
+        filename = [ outputFile,'M', num2str(nrParam-1),num2str(choiceRule),'_',...
             num2str(s),'_',trialArr{trialsq},'.csv' ];
     end
 csvwrite(filename,data);
