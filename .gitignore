@@ -1,10 +1,4 @@
 #
 #
-#*.csv
-output/
-input/BE
-input/EP
-input/AGE
 input/S3
-zz_old/
 .gitignore
