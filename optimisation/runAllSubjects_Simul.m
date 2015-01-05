@@ -1,5 +1,5 @@
 function [] = runAllSubjects_Simul( choiceFile, outcomeFile, ...
-    startFile, outputFile, sRun, trialsq, choiceRule)
+    startFile, outputFile, choiceRule)
 
 %function to run optimization for all subject at once
 
@@ -13,30 +13,14 @@ starts = size(startValues,1);
 dataAllSub=[];
 exitFl=[];
 
-trialArr = {'all','sta','dyn'};
-
-if trialsq == 1
-    tStart = 1;
-    tEnd = 220;
-elseif trialsq == 2
-    tStart = 41;
-    tEnd = 120;
-elseif trialsq == 3
-    tStart = 121;
-    tEnd = 220;
-%elseif trialsq == 4
-%    tStart = 41;
-%    tEnd = 220;
-end
+tStart = 1;
+tEnd = size(outcome,1;
 
 
 %for s = 1 : 3
 for s = 1 : subjects
-    if sRun ~=0
-        choiceFileName=[choiceFile,'_',num2str(s),'_',trialArr{trialsq},'_',num2str(sRun),'.csv'];
-    else
-        choiceFileName=[choiceFile,'_',num2str(s),'_',trialArr{trialsq},'.csv'];
-    end
+
+    choiceFileName=[choiceFile,'_',num2str(s),'.csv'];
     choice = csvread(choiceFileName);
     %nrIt = 5;
     nrIt=size(choice,2)/options;
@@ -106,16 +90,6 @@ for s = 1 : subjects
         dataOneSub = [p1;p2;p3;p4;p5;p6;p7];
     end    
 
-
-% % save file for each subject
-%     if choiceRule == 1
-%         filename = [outputFile,'_',num2str(nrParam),'P_',...
-%             num2str(s),'_v',num2str(choiceRule),'.csv' ];
-%     elseif choiceRule == 2
-%         filename = [outputFile,'_',num2str(nrParam-1),'P_',...
-%             num2str(s),'_v',num2str(choiceRule),'.csv' ];
-%     end
-%     csvwrite(filename,dataOneSub);
     dataAllSub  = [dataAllSub dataOneSub];
     exitFl  = [exitFl exitFls];
     text = ['Subject',num2str(s)];
@@ -123,15 +97,11 @@ for s = 1 : subjects
 end
 
 if sRun ~=0
-    filename = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_',...
-    trialArr{trialsq},'_',num2str(sRun),'.csv' ];
-    filename1 = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_',...
-    trialArr{trialsq},'_',num2str(sRun),'_exit','.csv' ];
+    filename = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'.csv' ];
+    filename1 = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_exit','.csv' ];
 else
-    filename = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_',...
-    trialArr{trialsq},'.csv' ];
-    filename1 = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_',...
-    trialArr{trialsq},'_exit','.csv' ];
+    filename = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'.csv' ];
+    filename1 = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_exit','.csv' ];
 end
 csvwrite(filename1,exitFl);
 csvwrite(filename,dataAllSub);

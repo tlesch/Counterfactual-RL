@@ -1,5 +1,5 @@
 function [] = runQValue_simul(parameterFile, outcomeFile, choiceFile,...
-     filenameQ,filenameP,trialsq, sRun,choiceRule)
+     filenameQ,filenameP,choiceRule)
 %generate nrIt sample for all subject (rows) in paramterFile
 
 %read in the outcome, choice and start values input files for all subjects
@@ -11,18 +11,15 @@ options = size(outcome,2)/subjects;
 nrParam = size(parameter,2);
 trials = size(outcome,1);
 
-trialArr = {'all','sta','dyn'};
-
 dataAllSubQT = zeros(trials,30*options,subjects);
 dataAllSubPT = zeros(trials,30*options,subjects);
 
 %run for all subject: genQValue(param, outcome, choiceRule)
 for s = 1 : subjects
 	if sRun ~=0
-        choiceFileName=[choiceFile,'_',num2str(s),'_',trialArr{trialsq},...
-        	'_',num2str(sRun),'.csv'];
+        choiceFileName=[choiceFile,'_',num2str(s),'.csv'];
     else
-        choiceFileName=[choiceFile,'_',num2str(s),'_',trialArr{trialsq},'.csv'];
+        choiceFileName=[choiceFile,'_',num2str(s),'.csv'];
     end
     choice = csvread(choiceFileName);
     nrIt=size(choice,2)/options;
