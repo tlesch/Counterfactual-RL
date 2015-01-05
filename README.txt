@@ -8,7 +8,7 @@ The following code implements the Maximum Likelihood Estimation (MLE) for an ada
 
 1. MLE (See folder “Optimisation”)
 
-The current code models a four-alternative-choice situations and update an agents belief about the value of each alternative according to following formula. The choice is modelled following a softmax rule with temperature τ:
+The current code models a four-alternative-choice situations and update an agents belief about the value of each alternative according to following formula. The choice is modelled following a softmax rule with temperature τ :
 
 
 Learning Rule: 
@@ -67,7 +67,7 @@ Necessary inputs (to indicate on simul_everything.m):
 	• nrIt: number of simulation per individual real subject
 	• choiceRule: 1 for Models 1 and 4; 1, 2 or 3 for Models 2 and 3
 
-3. Parameter Recovery (See folder “optimisation”)
+3. Parameter Recovery (See folder “Optimisation”)
 
 To confirm the model’s validity the simulated choice data is used to recover the parameter values that were used to simulated the data. In order to do so, the MLE optimisation procedure (see 1.) is repeated for each subject and simulation (and model). The currently depicted code, models how well each of the eight models can recover data generate using the full model (M4).
 
