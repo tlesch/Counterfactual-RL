@@ -1,5 +1,5 @@
 function [] = runAllSubjects( choiceFile, outcomeFile, ...
-    startFile,subFile, sRun, trialsq,outputFile,choiceRule)
+    startFile,subFile, outputFile,choiceRule)
 
 %function to run optimization for all subject at once
 outcome = csvread(outcomeFile);
@@ -12,26 +12,9 @@ nrParam = size(startValues,2);
 
 %run for all subject
 
-%trialsq: 1: EP & S3, trials 1-220, 2: EP & S3, 1-120, 
-% 3: EP & S3: 121-220, 4: EP & S3: 41-120
 
-
-trialArr = {'all','sta','dyn','allS'};
-%trialsq = 1;
-
-if trialsq == 1
-    tStart = 1;
-    tEnd = 220;
-elseif trialsq == 2
-    tStart = 41;
-    tEnd = 120;
-elseif trialsq == 3
-    tStart = 121;
-    tEnd = 220;
-elseif trialsq == 4
-    tStart = 41;
-    tEnd = 220;
-end
+tStart = 1;
+tEnd = size(outcome,1);
 
 %zeros(nrParam*size(startValues,1),subjects);
 p1 = [];
@@ -102,17 +85,8 @@ elseif nrParam == 6
 end
 
 
-if sRun ~=0
-    filename = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_',...
-    trialArr{trialsq},'_',num2str(sRun),'.csv' ];
-    filename1 = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_',...
-    trialArr{trialsq},'_',num2str(sRun),'_exit.csv' ];
-else
-    filename = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_',...
-    trialArr{trialsq},'.csv' ];
-    filename1 = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_',...
-    trialArr{trialsq},'_exit.csv' ];
-end
+filename = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'.csv' ];
+filename1 = [ outputFile,'M',num2str(nrParam-1),num2str(choiceRule),'_exit.csv' ];
 csvwrite(filename1,exitFl);
 csvwrite(filename,outData);
 disp(nrParam-1);
