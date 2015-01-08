@@ -6,6 +6,10 @@ Rescorla-Wagner adapted for counterfactuals
 The following code implements the Maximum Likelihood Estimation (MLE) for an adapted q-Learning Reinforcement Learning models as well as a simulations and model recovery procedure in matlab.
 
 
+Code for formatting etc. can be found here: 
+http://nbviewer.ipython.org/github/tlesch/Counterfactual-RL/blob/master/Calculations.ipynb
+
+
 1. MLE (See folder “Optimisation”)
 
 The current code models a four-alternative-choice situations and update an agents belief about the value of each alternative according to following formula. The choice is modelled following a softmax rule with temperature τ :
