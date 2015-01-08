@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Counterfactual-rl : Rescorla-Wagner adapted for counterfactuals">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Counterfactual-rl</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/tlesch/Counterfactual-RL">View on GitHub</a>
+
+          <h1 id="project_title">Counterfactual-rl</h1>
+          <h2 id="project_tagline">Rescorla-Wagner adapted for counterfactuals</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/tlesch/Counterfactual-RL/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/tlesch/Counterfactual-RL/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="counterfactual-rl" class="anchor" href="#counterfactual-rl" aria-hidden="true"><span class="octicon octicon-link"></span></a>Counterfactual-RL</h1>
+
+<h1>
+<a id="rescorla-wagner-adapted-for-counterfactuals" class="anchor" href="#rescorla-wagner-adapted-for-counterfactuals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rescorla-Wagner adapted for counterfactuals</h1>
+
+<p>The following code implements the Maximum Likelihood Estimation (MLE) for an adapted q-Learning Reinforcement Learning models as well as a simulations and model recovery procedure in matlab.</p>
+
+<p>Code for formatting etc. can be found here: 
+<a href="http://nbviewer.ipython.org/github/tlesch/Counterfactual-RL/blob/master/Calculations.ipynb">Notebook with Calculations</a></p>
+
+<h2>
+<a id="1-mle-see-folder-optimisation" class="anchor" href="#1-mle-see-folder-optimisation" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. MLE (See folder “Optimisation”)</h2>
+
+<p>The current code models a four-alternative-choice situations and update an agents belief about the value of each alternative according to following formula. The choice is modelled following a softmax rule with temperature τ :</p>
+
+<p>*<em>Learning Rule: 
+    For alternative i: Qi(t+1)=α</em>γ<em>β</em>δ<em>Oi(t)+(1-α</em>γ<em>β</em>δ)*Qi(t) (Full Model)</p>
+
+<pre><code>• Trial t ε {1,2,…,220}, stimulus i ε {1,2,3,4}
+• Outcome stimulus i on trial t: Oi(t) ε {0,1}
+• Expected value Qi for option i on trial t: Qi(t)
+• α always between 0 and 1, 
+• γ = 1 if i=j (i.e. selected), free otherwise, 
+• β=1 if Oi(t)=1, free otherwise, and 
+• δ=1 if i=j or if i≠j and Oj(t)=0 (i.e. selected or did not win), free otherwise.
+</code></pre>
+
+<p>*<em>Choice Rule: 
+    P_i(t+1)= (exp⁡(Q_i(t)</em>τ))/(∑(k=1 to 4) exp⁡(Q_k(t)*τ)) 
+    0&lt;τ&lt;21.4876 (Computational constraint)</p>
+
+<p>**Explanation Files:
+    • run_everything.m :  run optimisation for all models using real data
+    • runAllSubjects.m : run optimisation for all subject in subject file
+    • IndOpt.m : implementation of optimisation for one subject</p>
+
+<pre><code>• mod1.m : Model 1: only learning rate α (q-learning Modell)
+• mod2.m :  Model 2a: learning rate α and γ
+• mod3.m : Model 3a: learning rate α, γ and β
+• mod4.m : Model 4: learning rate α, γ, β and δ (Full Model)
+• mod22.m : Model 2b: learning rate α and β
+• mod23.m : Model 2b: learning rate α and δ
+• mod32.m : Model 3b: learning rate α, γ and δ
+• mod33.m : Model bc: learning rate α, β and δ
+• softmax.m : Softmax Choice Rule with temperature τ
+</code></pre>
+
+<p><strong>Necessary inputs (to indicate on run_everything.m)</strong>
+    • choiceFile: file with agent’s choices: 1 = chosen, 0 = no chosen
+    • outcomeFile: file with alternatives’s outcomes: 1 = win, 0 = no win
+    • startFile: start values for MLE using fmincon
+    • subFile: list with subject IDs
+    • outputFile: location and filename of output file
+    • choiceRule: 1 for Models 1 and 4; 1, 2 or 3 for Models 2 and 3</p>
+
+<h2>
+<a id="2-simulation-see-folder-simulation" class="anchor" href="#2-simulation-see-folder-simulation" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Simulation (See folder “Simulation”)</h2>
+
+<p>During the simulation, each subject’s parameters are used to generate multiple datasets of choices per subjects (simulated subjects):</p>
+
+<pre><code>• simul_everything.m : run simulation for all models
+• runSimul.m : run simulation for all subjects
+• simulData.m : run simulation for one subject 
+• genChoices.m : generate choice using the parameter values
+• softmax.m : as before
+</code></pre>
+
+<p>**Necessary inputs (to indicate on simul_everything.m):</p>
+
+<pre><code>• parameterFile: file with model parameter per individual subject
+• outcomeFile: file with alternatives’s outcomes (real): 1 = win, 0 = no win
+• outputFile: location and filename of output file
+• nrIt: number of simulation per individual real subject
+• choiceRule: 1 for Models 1 and 4; 1, 2 or 3 for Models 2 and 3
+</code></pre>
+
+<h2>
+<a id="3-parameter-recovery-see-folder-optimisation" class="anchor" href="#3-parameter-recovery-see-folder-optimisation" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. Parameter Recovery (See folder “Optimisation”)</h2>
+
+<p>To confirm the model’s validity the simulated choice data is used to recover the parameter values that were used to simulated the data. In order to do so, the MLE optimisation procedure (see 1.) is repeated for each subject and simulation (and model). The currently depicted code, models how well each of the eight models can recover data generate using the full model (M4).</p>
+
+<pre><code>• run_everything_simul.m : run optimisation for all models based on simulated behavioural data
+• runAllSubjects_Simul.m : run optimisation for all subjects based on simulated behavioural data
+</code></pre>
+
+<p>**Necessary inputs (to indicate on run_everything_simul.m)
+    • choiceFile: file with simulated agent’s choices: 1 = chosen, 0 = no chosen
+    • outcomeFile: file with alternatives’s outcomes: 1 = win, 0 = no win
+    • startFile: start values for MLE using fmincon
+    • outputFile: location and filename of output file
+    • choiceRule: 1 for Models 1 and 4; 1, 2 or 3 for Models 2 and 3</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Counterfactual-rl maintained by <a href="https://github.com/tlesch">tlesch</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
