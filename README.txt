@@ -3,7 +3,7 @@ Counterfactual-RL
 
 Rescorla-Wagner adapted for counterfactuals
 
-The following code implements the Maximum Likelihood Estimation (MLE) for an adapted q-Learning Reinforcement Learning models as well as a simulations and model recovery procedure in matlab.
+The following code implements the Maximum Likelihood Estimation (MLE) for an adapted q-Learning Reinforcement Learning model as well as a simulations and model recovery procedure in matlab.
 
 
 Code for formatting etc. can be found here: 
